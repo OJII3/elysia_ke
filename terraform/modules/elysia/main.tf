@@ -18,26 +18,26 @@ data "local_file" "ssh_public_key" {
   filename = "${var.proxmox_config.pub_key_file}"
 }
 
-resource "proxmox_virtual_environment_download_file" "eeke-mobius" {
+resource "proxmox_virtual_environment_download_file" "eke-mobius" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "anaxa"
+  node_name = "mobius"
 
   url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
 }
 
-resource "proxmox_virtual_environment_download_file" "eeke-pardofelis" {
+resource "proxmox_virtual_environment_download_file" "eke-eden" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "mydei"
+  node_name = "eden"
 
   url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
 }
 
-resource "proxmox_virtual_environment_download_file" "eeke-eden" {
+resource "proxmox_virtual_environment_download_file" "eke-pardofelis" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "phainon"
+  node_name = "pardofelis"
 
   url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
 }
