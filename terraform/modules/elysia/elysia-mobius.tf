@@ -3,7 +3,7 @@ resource "proxmox_virtual_environment_vm" "mobius" {
   node_name = "elysia-mobius"
 
   agent {
-    enabled = false
+    enabled = true
   }
   stop_on_destroy = true
 
@@ -22,7 +22,7 @@ resource "proxmox_virtual_environment_vm" "mobius" {
   }
 
   disk {
-    datastore_id = "local-lvm"
+    datastore_id = "local"
     file_id = proxmox_virtual_environment_download_file.mobius.image.id
     interface = "virtio0"
     iothread = true
@@ -33,7 +33,7 @@ resource "proxmox_virtual_environment_vm" "mobius" {
   initialization {
     ip_config {
       ipv4 {
-        address = "10.42.0.120"
+        address = "10.42.0.12"
         gateway = "10.42.0.1"
       }
     }

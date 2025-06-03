@@ -18,10 +18,11 @@ data "local_file" "ssh_public_key" {
   filename = "${var.proxmox_config.pub_key_file}"
 }
 
-resource "proxmox_virtual_environment_download_file" "mobius" {
+# control plane(+ worker) nodes ###################
+resource "proxmox_virtual_environment_download_file" "kevin" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "mobius"
+  node_name = "kevin"
 
   url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
 }
@@ -34,10 +35,28 @@ resource "proxmox_virtual_environment_download_file" "eden" {
   url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
 }
 
+resource "proxmox_virtual_environment_download_file" "mobius" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "mobius"
+
+  url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+}
+
+# Load balancer node ###################
 resource "proxmox_virtual_environment_download_file" "pardofelis" {
   content_type = "iso"
   datastore_id = "local"
   node_name = "pardofelis"
+
+  url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+}
+
+#  worker only nodes ###################
+resource "proxmox_virtual_environment_download_file" "su" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name = "su"
 
   url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
 }
