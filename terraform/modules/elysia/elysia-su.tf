@@ -47,4 +47,4 @@ resource "proxmox_virtual_environment_vm" "elysia-su" {
   network_device {
     bridge = "br0"
   }
-
+}

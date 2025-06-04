@@ -37,7 +37,7 @@ resource "proxmox_virtual_environment_vm" "elysia-pardofelis" {
         gateway = "10.42.0.1"
       }
     }
-    
+
     user_account {
       username = "kubernetes"
       keys     = [trimspace(data.local_file.ssh_public_key.content)]
@@ -47,4 +47,4 @@ resource "proxmox_virtual_environment_vm" "elysia-pardofelis" {
   network_device {
     bridge = "br0"
   }
-
+}
