@@ -18,45 +18,45 @@ data "local_file" "ssh_public_key" {
   filename = "${var.proxmox_config.pub_key_file}"
 }
 
-# control plane(+ worker) nodes ###################
+# Control Plane & Worker nodes ###################
 resource "proxmox_virtual_environment_download_file" "kevin" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "kevin"
+  node_name    = "kevin"
 
-  url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 }
 
 resource "proxmox_virtual_environment_download_file" "eden" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "eden"
+  node_name    = "eden"
 
-  url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 }
 
 resource "proxmox_virtual_environment_download_file" "mobius" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "mobius"
+  node_name    = "mobius"
 
-  url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 }
 
-# Load balancer node ###################
+# Load Balancer node (kube-vip) ###################
 resource "proxmox_virtual_environment_download_file" "pardofelis" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "pardofelis"
+  node_name    = "pardofelis"
 
-  url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 }
 
-#  worker only nodes ###################
+# Worker only node ###################
 resource "proxmox_virtual_environment_download_file" "su" {
   content_type = "iso"
   datastore_id = "local"
-  node_name = "su"
+  node_name    = "su"
 
-  url = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
 }

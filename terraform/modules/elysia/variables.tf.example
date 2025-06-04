@@ -7,10 +7,10 @@ variable "proxmox_config" {
     pub_key_file = string
   })
   default = {
-    endpoint     = "https://cipher:8006"
+    endpoint     = "https://your-proxmox-host:8006"
     username     = "root@pam"
-    password     = "proxmox password"
-    pub_key_file = "~/.ssh/id_rsa.pub"
+    password     = "your-proxmox-password"
+    pub_key_file = "/path/to/your/public_key.pub"
   }
   description = "Proxmox VE connection configuration"
-}
+

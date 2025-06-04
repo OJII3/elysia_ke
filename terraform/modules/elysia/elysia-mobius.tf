@@ -1,6 +1,6 @@
-resource "proxmox_virtual_environment_vm" "mobius" {
-  name = "mobius"
-  node_name = "elysia-mobius"
+resource "proxmox_virtual_environment_vm" "elysia-mobius" {
+  name      = "elysia-mobius"
+  node_name = "mobius"
 
   agent {
     enabled = true
@@ -8,13 +8,13 @@ resource "proxmox_virtual_environment_vm" "mobius" {
   stop_on_destroy = true
 
   startup {
-    order = "3"
-    up_delay = "60"
+    order      = "3"
+    up_delay   = "60"
     down_delay = "60"
   }
 
   cpu {
-    cores = 1
+    cores = 4
   }
 
   memory {
@@ -22,25 +22,25 @@ resource "proxmox_virtual_environment_vm" "mobius" {
   }
 
   disk {
-    datastore_id = "local"
-    file_id = proxmox_virtual_environment_download_file.mobius.image.id
-    interface = "virtio0"
-    iothread = true
-    discard = "on"
-    size = "32G"
+    datastore_id = "local-lvm"
+    file_id      = proxmox_virtual_environment_download_file.mobius.id
+    interface    = "virtio0"
+    iothread     = true
+    discard      = "on"
+    size         = 50
   }
 
   initialization {
     ip_config {
       ipv4 {
-        address = "10.42.0.12"
+        address = "10.42.0.12/24"
         gateway = "10.42.0.1"
       }
     }
-
+    
     user_account {
       username = "kubernetes"
-      keys = [trimspace(data.local_file.ssh_public_key.content)]
+      keys     = [trimspace(data.local_file.ssh_public_key.content)]
     }
   }
 
