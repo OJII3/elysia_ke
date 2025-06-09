@@ -1,3 +1,3 @@
 module "elysia" {
-  source = "./module/elysia"
+  source = "./modules/elysia"
 }
