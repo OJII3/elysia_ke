@@ -18,45 +18,13 @@ data "local_file" "ssh_public_key" {
   filename = "${var.proxmox_config.pub_key_file}"
 }
 
-# Control Plane & Worker nodes ###################
-resource "proxmox_virtual_environment_download_file" "kevin" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "kevin"
+# Flatcar Container Linux cloud image for all VMs - download once to the cluster
+resource "proxmox_virtual_environment_download_file" "flatcar_cloud_image" {
+  content_type       = "iso"
+  datastore_id       = "local"
+  node_name          = "cipher"
+  file_name          = "flatcar_production_qemu_image.img"
+  overwrite          = false
 
-  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-}
-
-resource "proxmox_virtual_environment_download_file" "eden" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "eden"
-
-  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-}
-
-resource "proxmox_virtual_environment_download_file" "mobius" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "mobius"
-
-  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-}
-
-# Load Balancer node (kube-vip) ###################
-resource "proxmox_virtual_environment_download_file" "pardofelis" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "pardofelis"
-
-  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-}
-
-# Worker only node ###################
-resource "proxmox_virtual_environment_download_file" "su" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "su"
-
-  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
+  url = "https://stable.release.flatcar-linux.net/amd64-usr/current/flatcar_production_qemu_image.img.bz2"
 }

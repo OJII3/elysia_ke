@@ -1,6 +1,6 @@
 resource "proxmox_virtual_environment_vm" "elysia-mobius" {
   name      = "elysia-mobius"
-  node_name = "mobius"
+  node_name = "cipher"
 
   agent {
     enabled = true
@@ -23,7 +23,7 @@ resource "proxmox_virtual_environment_vm" "elysia-mobius" {
 
   disk {
     datastore_id = "local-lvm"
-    file_id      = proxmox_virtual_environment_download_file.mobius.id
+    file_id      = proxmox_virtual_environment_download_file.flatcar_cloud_image.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"

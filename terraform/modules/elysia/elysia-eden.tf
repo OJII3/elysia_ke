@@ -1,6 +1,6 @@
 resource "proxmox_virtual_environment_vm" "elysia-eden" {
   name      = "elysia-eden"
-  node_name = "eden"
+  node_name = "cipher"
 
   agent {
     enabled = true
@@ -23,7 +23,7 @@ resource "proxmox_virtual_environment_vm" "elysia-eden" {
 
   disk {
     datastore_id = "local-lvm"
-    file_id      = proxmox_virtual_environment_download_file.eden.id
+    file_id      = proxmox_virtual_environment_download_file.flatcar_cloud_image.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
