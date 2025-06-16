@@ -1,50 +1,52 @@
-resource "proxmox_virtual_environment_vm" "elysia-pardofelis" {
-  name      = "elysia-pardofelis"
-  node_name = "cipher"
+resource "proxmox_vm_qemu" "elysia-pardofelis" {
+  name         = "elysia-pardofelis"
+  target_node  = "Cipher"
+  vmid         = 140 # Explicit VM ID to prevent conflicts
 
-  agent {
-    enabled = true
-  }
-  stop_on_destroy = true
-
-  startup {
-    order      = "2"
-    up_delay   = "30"
-    down_delay = "30"
-  }
+  agent    = 0
+  os_type  = "cloud-init"
+  onboot   = true
+  startup  = "order=3,up=60,down=60"
 
   cpu {
-    cores = 2
+    cores  = 4
   }
+  memory = 4096
 
-  memory {
-    dedicated = 2048
-  }
+  # Boot configuration
+  bootdisk = "scsi0"
+  boot     = "order=scsi0;ide2"
 
-  disk {
-    datastore_id = "local-lvm"
-    file_id      = proxmox_virtual_environment_download_file.flatcar_cloud_image.id
-    interface    = "virtio0"
-    iothread     = true
-    discard      = "on"
-    size         = 30
-  }
-
-  initialization {
-    ip_config {
-      ipv4 {
-        address = "10.42.0.100/24"
-        gateway = "10.42.0.1"
+  # New disks block syntax for provider 3.x
+  disks {
+    scsi {
+      scsi0 {
+        disk {
+          size     = "50G"
+          storage  = "local"
+        }
       }
     }
-
-    user_account {
-      username = "kubernetes"
-      keys     = [trimspace(data.local_file.ssh_public_key.content)]
+    ide {
+      ide2 {
+        cdrom {
+          iso = "local:iso/fedora-coreos-42.20250526.3.0-live-iso.x86_64.iso"
+        }
+        # cloudinit {
+        #   storage = "local-lvm"
+        # }
+      }
     }
   }
 
-  network_device {
+  network {
+    id = 0
     bridge = "br0"
+    model  = "virtio"
   }
+
+  # Cloud-init configuration
+  ciuser     = "kubernetes"
+  sshkeys    = trimspace(data.local_file.ssh_public_key.content)
+  ipconfig0  = "ip=10.42.0.13/24,gw=10.42.0.1"
 }

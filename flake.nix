@@ -22,6 +22,7 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             terraform
+            terraform-providers.proxmox
           ];
         };
       };
