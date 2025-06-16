@@ -1,0 +1,16 @@
+variable "proxmox_config" {
+  sensitive = true
+  type = object({
+    endpoint     = string
+    username     = string
+    password     = string
+    pub_key_file = string
+  })
+  default = {
+    endpoint     = "https://your-proxmox-host:8006"
+    username     = "root@pam"
+    password     = "your-proxmox-password"
+    pub_key_file = "/path/to/your/public_key.pub"
+  }
+  description = "Proxmox VE connection configuration"
+
