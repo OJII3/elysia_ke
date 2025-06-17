@@ -3,15 +3,15 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
   target_node  = "Cipher"
   vmid         = 140 # Explicit VM ID to prevent conflicts
 
-  agent    = 0
+  agent    = 1
   os_type  = "cloud-init"
   onboot   = true
   startup  = "order=3,up=60,down=60"
 
   cpu {
-    cores  = 4
+    cores  = 1
   }
-  memory = 4096
+  memory = 2560
 
   # Boot configuration
   bootdisk = "scsi0"
@@ -22,19 +22,16 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
     scsi {
       scsi0 {
         disk {
-          size     = "50G"
+          size     = "32G"
           storage  = "local"
         }
       }
     }
     ide {
-      ide2 {
+      ide1 {
         cdrom {
           iso = local.fedora_coreos_iso
         }
-        # cloudinit {
-        #   storage = "local-lvm"
-        # }
       }
     }
   }
@@ -49,4 +46,5 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
   ciuser     = "kubernetes"
   sshkeys    = trimspace(data.local_file.ssh_public_key.content)
   ipconfig0  = "ip=10.42.0.13/24,gw=10.42.0.1"
+  nameserver = "1.1.1.1 8.8.8.8"
 }

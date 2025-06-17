@@ -1,6 +1,7 @@
 /.direnv
+.env
 
 **/variables.tf
 **/.terraform
 **/terraform.tfstate*
-.env
+**/terraform.tf
