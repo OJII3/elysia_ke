@@ -30,7 +30,7 @@ resource "proxmox_vm_qemu" "elysia-eden" {
     ide {
       ide2 {
         cdrom {
-          iso = "local:iso/fedora-coreos-42.20250526.3.0-live-iso.x86_64.iso"
+          iso = local.fedora_coreos_iso
         }
         # cloudinit {
         #   storage = "local-lvm"

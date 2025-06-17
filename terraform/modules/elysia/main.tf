@@ -17,6 +17,9 @@ data "local_file" "ssh_public_key" {
   filename = "${var.proxmox_config.pub_key_file}"
 }
 
-# Flatcar Container Linux template VM (assuming it's already prepared)
-# For telmate/proxmox, we typically clone from an existing template
-# You should prepare a Flatcar template VM manually first
+# Common ISO file for all VMs
+locals {
+  fedora_coreos_iso = "local:iso/fedora-coreos-42.20250526.3.0-live-iso.x86_64.iso"
+}
+
+
