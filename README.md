@@ -17,14 +17,14 @@ Proxmox VE 上で動かす、k3s クラスタの構築を支援するツール�
 
 ## クラスタ構成
 
+- ノード `elysia-eden`
+    - Control Plane & Worker Node & Load Balancer Node (kube-vip)
 - ノード `elysia-kevin`
     - Control Plane & Worker Node
-- ノード `elysia-eden`
-    - Control Plane & Worker Node
-- ノード `elysia-eden`
+- ノード `elysia-mobius`
     - Control Plane & Worker Node
 - ノード `elysia-pardofelis`
-    - Load Balancer Node (kube-vip)
+    - Worker Node
 - ノード  `elysia-su`
     - Worker Node
 
