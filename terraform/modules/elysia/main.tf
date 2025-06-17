@@ -5,6 +5,13 @@ terraform {
       version = "3.0.2-rc01"
     }
   }
+  backend "s3" { # R2 is compatible with S3 API
+    bucket = "elysia-ke-tfstate"
+    key = "default.state"
+    region = "us-east-1"
+    endpoints = "https://${var.proxmox_config.cloudflare_account_id}.r2.cloudflarestorage.com"
+    skip_credentials_validation = true # no aws access key
+  }
 }
 
 provider "proxmox" {

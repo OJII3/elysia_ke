@@ -5,12 +5,14 @@ variable "proxmox_config" {
     username     = string
     password     = string
     pub_key_file = string
+    cloudflare_account_id = string
   })
   default = {
     endpoint     = "https://your-proxmox-host:8006"
     username     = "root@pam"
     password     = "your-proxmox-password"
     pub_key_file = "/path/to/your/public_key.pub"
+    cloudflare_account_id = "your-cloudflare-account-id"
   }
   description = "Proxmox VE connection configuration"
 
