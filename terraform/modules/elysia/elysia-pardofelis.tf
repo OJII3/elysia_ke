@@ -47,4 +47,8 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
   sshkeys    = trimspace(data.local_file.ssh_public_key.content)
   ipconfig0  = "ip=10.42.0.13/24,gw=10.42.0.1"
   nameserver = "1.1.1.1 8.8.8.8"
+  cicustom   = "user=local:snippets/elysia-pardofelis-user-data.yml"
+  
+  # Ensure cloud-init file is created before VM
+  depends_on = [local_file.elysia_pardofelis_user_data]
 }
