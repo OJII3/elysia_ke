@@ -3,7 +3,7 @@ resource "proxmox_vm_qemu" "elysia-su" {
   target_node  = "Cipher"
   vmid         = 150 # Explicit VM ID to prevent conflicts
 
-  agent    = 1
+  agent    = 0
   os_type  = "cloud-init"
   onboot   = true
   startup  = "order=3,up=60,down=60"
