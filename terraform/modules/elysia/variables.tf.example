@@ -13,4 +13,19 @@ variable "proxmox_config" {
     pub_key_file = "/path/to/your/public_key.pub"
   }
   description = "Proxmox VE connection configuration"
+}
+
+variable "k3s_config" {
+  type = object({
+    cluster_vip    = string
+    cluster_token  = string
+    k3s_version    = string
+  })
+  default = {
+    cluster_vip   = "10.42.0.100"
+    cluster_token = "your-k3s-cluster-token-here"
+    k3s_version   = "v1.31.4+k3s1"
+  }
+  description = "K3s cluster configuration"
+}
 

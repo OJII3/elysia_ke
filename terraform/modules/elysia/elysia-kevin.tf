@@ -9,7 +9,7 @@ resource "proxmox_vm_qemu" "elysia-kevin" {
   startup  = "order=3,up=60,down=60"
 
   cpu {
-    cores  = 4
+    cores  = 2
   }
   memory = 4096
 
@@ -28,13 +28,10 @@ resource "proxmox_vm_qemu" "elysia-kevin" {
       }
     }
     ide {
-      ide2 {
+      ide1 {
         cdrom {
-          iso = "local:iso/fedora-coreos-42.20250526.3.0-live-iso.x86_64.iso"
+          iso = local.fedora_coreos_iso
         }
-        # cloudinit {
-        #   storage = "local-lvm"
-        # }
       }
     }
   }
@@ -49,4 +46,9 @@ resource "proxmox_vm_qemu" "elysia-kevin" {
   ciuser     = "kubernetes"
   sshkeys    = trimspace(data.local_file.ssh_public_key.content)
   ipconfig0  = "ip=10.42.0.11/24,gw=10.42.0.1"
+  nameserver = "1.1.1.1 8.8.8.8"
+  cicustom   = "user=local:snippets/elysia-kevin-user-data.yml"
+  
+  # Ensure cloud-init file is created before VM
+  depends_on = [local_file.elysia_kevin_user_data]
 }

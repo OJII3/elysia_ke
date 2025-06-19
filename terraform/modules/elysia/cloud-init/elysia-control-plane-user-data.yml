@@ -1,0 +1,53 @@
+---
+# cloud-config
+users:
+  - default
+  - name: kubernetes
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    groups: sudo
+    lock_passwd: false
+
+package_update: true
+
+write_files:
+  - path: /etc/k3s-config.yaml
+    content: |
+      server: https://${cluster_vip}:6443
+      token: ${k3s_token}
+      disable:
+        - traefik
+        - servicelb
+      kube-apiserver-arg:
+        - advertise-address=${node_ip}
+      node-ip: ${node_ip}
+      bind-address: ${node_ip}
+      flannel-iface: eth0
+      tls-san:
+        - ${cluster_vip}
+        - ${node_ip}
+    owner: root:root
+    permissions: '0644'
+
+  - path: /usr/local/bin/setup-k3s.sh
+    content: |
+      #!/bin/bash
+      set -e
+
+      # Wait for first control plane node to be ready
+      while ! nc -z ${cluster_vip} 6443; do
+        echo "Waiting for primary control plane node to be ready..."
+        sleep 10
+      done
+
+      # Install k3s
+      curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${k3s_version} sh -s - server --config /etc/k3s-config.yaml
+
+      echo "K3s control plane node setup completed"
+    owner: root:root
+    permissions: '0755'
+
+runcmd:
+  - /usr/local/bin/setup-k3s.sh
+
+final_message: "K3s control plane node is ready!"

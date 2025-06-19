@@ -9,9 +9,9 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
   startup  = "order=3,up=60,down=60"
 
   cpu {
-    cores  = 4
+    cores  = 1
   }
-  memory = 4096
+  memory = 2560
 
   # Boot configuration
   bootdisk = "scsi0"
@@ -22,19 +22,16 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
     scsi {
       scsi0 {
         disk {
-          size     = "50G"
+          size     = "32G"
           storage  = "local"
         }
       }
     }
     ide {
-      ide2 {
+      ide1 {
         cdrom {
-          iso = "local:iso/fedora-coreos-42.20250526.3.0-live-iso.x86_64.iso"
+          iso = local.fedora_coreos_iso
         }
-        # cloudinit {
-        #   storage = "local-lvm"
-        # }
       }
     }
   }
@@ -49,4 +46,9 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
   ciuser     = "kubernetes"
   sshkeys    = trimspace(data.local_file.ssh_public_key.content)
   ipconfig0  = "ip=10.42.0.13/24,gw=10.42.0.1"
+  nameserver = "1.1.1.1 8.8.8.8"
+  cicustom   = "user=local:snippets/elysia-pardofelis-user-data.yml"
+  
+  # Ensure cloud-init file is created before VM
+  depends_on = [local_file.elysia_pardofelis_user_data]
 }
