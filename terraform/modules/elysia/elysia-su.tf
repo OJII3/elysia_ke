@@ -28,7 +28,7 @@ resource "proxmox_vm_qemu" "elysia-su" {
       }
     }
     ide {
-      ide1 {
+      ide2 {
         cdrom {
           iso = local.fedora_coreos_iso
         }

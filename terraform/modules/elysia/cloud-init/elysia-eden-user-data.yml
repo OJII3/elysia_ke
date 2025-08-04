@@ -7,8 +7,23 @@ users:
     shell: /bin/bash
     groups: sudo
     lock_passwd: false
+    ssh_authorized_keys:
+      - ${ssh_public_key}
 
 package_update: true
+
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+      addresses:
+        - ${node_ip}/24
+      gateway4: 10.42.0.1
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
 
 write_files:
   - path: /etc/k3s-config.yaml
