@@ -44,7 +44,7 @@ resource "proxmox_vm_qemu" "elysia-eden" {
 
   # Cloud-init configuration
   ciuser     = "kubernetes"
-  sshkeys    = trimspace(data.local_file.ssh_public_key.content)
+  sshkeys    = local.ssh_public_key
   ipconfig0  = "ip=192.168.8.10/24,gw=192.168.8.1"
   nameserver = "192.168.8.1 1.1.1.1"
   cicustom   = "user=local:snippets/elysia-eden-user-data.yml"

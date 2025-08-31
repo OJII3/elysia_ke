@@ -1,25 +1,24 @@
 variable "proxmox_config" {
   sensitive = true
   type = object({
-    endpoint     = string
-    username     = string
-    password     = string
-    pub_key_file = string
+    endpoint = string
+    username = string
+    password = string
   })
   default = {
-    endpoint     = "https://your-proxmox-host:8006"
-    username     = "root@pam"
-    password     = "your-proxmox-password"
-    pub_key_file = "/path/to/your/public_key.pub"
+    endpoint = "http://cipher:8006/api2/json"
+    username = "xxxxxxxx"
+    password = "xxxxxxxxxxxxxxx"
   }
   description = "Proxmox VE connection configuration"
 }
 
 variable "k3s_config" {
+  sensitive = true
   type = object({
-    cluster_vip    = string
-    cluster_token  = string
-    k3s_version    = string
+    cluster_vip   = string
+    cluster_token = string
+    k3s_version   = string
   })
   default = {
     cluster_vip   = "192.168.8.20"
@@ -31,10 +30,10 @@ variable "k3s_config" {
 
 variable "p4d_config" {
   type = object({
-    enabled       = bool
-    image         = string
-    storage_size  = string
-    node_port     = number
+    enabled      = bool
+    image        = string
+    storage_size = string
+    node_port    = number
   })
   default = {
     enabled      = false

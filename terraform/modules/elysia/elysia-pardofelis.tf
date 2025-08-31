@@ -44,7 +44,7 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
 
   # Cloud-init configuration
   ciuser     = "kubernetes"
-  sshkeys    = trimspace(data.local_file.ssh_public_key.content)
+  sshkeys    = local.ssh_public_key
   ipconfig0  = "ip=192.168.8.12/24,gw=192.168.8.1"
   nameserver = "192.168.8.1 1.1.1.1"
   cicustom   = "user=local:snippets/elysia-pardofelis-user-data.yml"

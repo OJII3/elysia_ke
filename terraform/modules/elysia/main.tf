@@ -8,19 +8,18 @@ terraform {
 }
 
 provider "proxmox" {
-  pm_api_url  = var.proxmox_config.endpoint
-  pm_user     = var.proxmox_config.username
-  pm_password = var.proxmox_config.password
-}
-
-data "local_file" "ssh_public_key" {
-  filename = var.proxmox_config.pub_key_file
+  pm_api_url      = var.proxmox_config.endpoint
+  pm_user         = var.proxmox_config.username
+  pm_password     = var.proxmox_config.password
+  pm_tls_insecure = true
 }
 
 # Common ISO file for all VMs
 locals {
   fedora_coreos_iso = "local:iso/flatcar_production_iso_image.iso"
+  ssh_public_key    = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICirSl3nlg3z3VID3ondlBDy7teYu74pnRPFhvj2LfkH"
 }
+
 
 # Cloud-init templates for k3s nodes
 resource "local_file" "elysia_eden_user_data" {
