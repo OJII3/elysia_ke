@@ -4,8 +4,10 @@
 **/variables.tf
 **/.terraform
 **/terraform.tfstate*
-**/terraform.tf
+**/*.tfbackend
+!**/example.*.tfbackend
 **/*.tfvars
+!**/example.*.tfvars
 **/*.tfvars.json
 **/*.auto.tfvars
 **/*.auto.tfvars.json
