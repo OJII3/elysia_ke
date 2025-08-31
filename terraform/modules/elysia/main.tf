@@ -19,7 +19,7 @@ data "local_file" "ssh_public_key" {
 
 # Common ISO file for all VMs
 locals {
-  fedora_coreos_iso = "local:iso/fedora-coreos-42.20250526.3.0-live-iso.x86_64.iso"
+  fedora_coreos_iso = "local:iso/flatcar_production_iso_image.iso"
 }
 
 # Cloud-init templates for k3s nodes
@@ -28,7 +28,7 @@ resource "local_file" "elysia_eden_user_data" {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "10.42.0.10"
+    node_ip     = "192.168.8.30"
   })
   filename = "/tmp/elysia-eden-user-data.yml"
 }
@@ -38,7 +38,7 @@ resource "local_file" "elysia_kevin_user_data" {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "10.42.0.11"
+    node_ip     = "192.168.8.31"
   })
   filename = "/tmp/elysia-kevin-user-data.yml"
 }
@@ -48,7 +48,7 @@ resource "local_file" "elysia_mobius_user_data" {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "10.42.0.12"
+    node_ip     = "192.168.8.32"
   })
   filename = "/tmp/elysia-mobius-user-data.yml"
 }
@@ -58,7 +58,7 @@ resource "local_file" "elysia_pardofelis_user_data" {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "10.42.0.13"
+    node_ip     = "192.168.8.33"
   })
   filename = "/tmp/elysia-pardofelis-user-data.yml"
 }
@@ -68,7 +68,7 @@ resource "local_file" "elysia_su_user_data" {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "10.42.0.14"
+    node_ip     = "192.168.8.34"
   })
   filename = "/tmp/elysia-su-user-data.yml"
 }
