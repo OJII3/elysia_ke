@@ -9,9 +9,9 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
   startup  = "order=3,up=60,down=60"
 
   cpu {
-    cores  = 1
+    cores  = 2
   }
-  memory = 2560
+  memory = 4096
 
   # Boot configuration
   bootdisk = "scsi0"
@@ -45,8 +45,8 @@ resource "proxmox_vm_qemu" "elysia-pardofelis" {
   # Cloud-init configuration
   ciuser     = "kubernetes"
   sshkeys    = trimspace(data.local_file.ssh_public_key.content)
-  ipconfig0  = "ip=10.42.0.13/24,gw=10.42.0.1"
-  nameserver = "1.1.1.1 8.8.8.8"
+  ipconfig0  = "ip=192.168.8.12/24,gw=192.168.8.1"
+  nameserver = "192.168.8.1 1.1.1.1"
   cicustom   = "user=local:snippets/elysia-pardofelis-user-data.yml"
   
   # Ensure cloud-init file is created before VM

@@ -22,10 +22,25 @@ variable "k3s_config" {
     k3s_version    = string
   })
   default = {
-    cluster_vip   = "10.42.0.100"
+    cluster_vip   = "192.168.8.20"
     cluster_token = "your-k3s-cluster-token-here"
     k3s_version   = "v1.31.4+k3s1"
   }
   description = "K3s cluster configuration"
 }
 
+variable "p4d_config" {
+  type = object({
+    enabled       = bool
+    image         = string
+    storage_size  = string
+    node_port     = number
+  })
+  default = {
+    enabled      = false
+    image        = "perforce/helix-core-server:latest"
+    storage_size = "50Gi"
+    node_port    = 31666
+  }
+  description = "Perforce Helix Core (p4d) deployment configuration"
+}

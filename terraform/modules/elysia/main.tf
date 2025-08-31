@@ -24,53 +24,37 @@ locals {
 
 # Cloud-init templates for k3s nodes
 resource "local_file" "elysia_eden_user_data" {
-  content = templatefile("${path.module}/cloud-init/elysia-eden-user-data.yml", {
+  content = sensitive(templatefile("${path.module}/cloud-init/elysia-eden-user-data.yml", {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "192.168.8.30"
-  })
+    node_ip     = "192.168.8.10"
+    p4d_enabled = var.p4d_config.enabled
+    p4d_manifest = indent(6, templatefile("${path.module}/cloud-init/perforce-p4d.yml", {
+      p4d_image       = var.p4d_config.image
+      p4d_storage     = var.p4d_config.storage_size
+      p4d_node_port   = var.p4d_config.node_port
+    }))
+  }))
   filename = "/tmp/elysia-eden-user-data.yml"
 }
 
-resource "local_file" "elysia_kevin_user_data" {
-  content = templatefile("${path.module}/cloud-init/elysia-control-plane-user-data.yml", {
-    k3s_token   = var.k3s_config.cluster_token
-    k3s_version = var.k3s_config.k3s_version
-    cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "192.168.8.31"
-  })
-  filename = "/tmp/elysia-kevin-user-data.yml"
-}
-
 resource "local_file" "elysia_mobius_user_data" {
-  content = templatefile("${path.module}/cloud-init/elysia-control-plane-user-data.yml", {
+  content = sensitive(templatefile("${path.module}/cloud-init/elysia-control-plane-user-data.yml", {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "192.168.8.32"
-  })
+    node_ip     = "192.168.8.11"
+  }))
   filename = "/tmp/elysia-mobius-user-data.yml"
 }
 
 resource "local_file" "elysia_pardofelis_user_data" {
-  content = templatefile("${path.module}/cloud-init/elysia-worker-user-data.yml", {
+  content = sensitive(templatefile("${path.module}/cloud-init/elysia-control-plane-user-data.yml", {
     k3s_token   = var.k3s_config.cluster_token
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "192.168.8.33"
-  })
+    node_ip     = "192.168.8.12"
+  }))
   filename = "/tmp/elysia-pardofelis-user-data.yml"
 }
-
-resource "local_file" "elysia_su_user_data" {
-  content = templatefile("${path.module}/cloud-init/elysia-worker-user-data.yml", {
-    k3s_token   = var.k3s_config.cluster_token
-    k3s_version = var.k3s_config.k3s_version
-    cluster_vip = var.k3s_config.cluster_vip
-    node_ip     = "192.168.8.34"
-  })
-  filename = "/tmp/elysia-su-user-data.yml"
-}
-
-

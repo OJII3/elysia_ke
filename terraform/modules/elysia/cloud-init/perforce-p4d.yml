@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: perforce
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p4d
+  namespace: perforce
+spec:
+  type: NodePort
+  selector:
+    app: p4d
+  ports:
+    - name: p4d
+      protocol: TCP
+      port: 1666
+      targetPort: 1666
+      nodePort: ${p4d_node_port}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: p4d-data
+  namespace: perforce
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: ${p4d_storage}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p4d
+  namespace: perforce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p4d
+  template:
+    metadata:
+      labels:
+        app: p4d
+    spec:
+      containers:
+        - name: p4d
+          image: ${p4d_image}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1666
+              name: p4d
+          # NOTE: Adjust mountPath and env according to the image you use
+          volumeMounts:
+            - name: p4d-data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+      volumes:
+        - name: p4d-data
+          persistentVolumeClaim:
+            claimName: p4d-data

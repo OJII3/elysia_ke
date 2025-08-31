@@ -1,0 +1,19 @@
+proxmox_config = {
+  endpoint     = "https://your-proxmox-host:8006"
+  username     = "root@pam"
+  password     = "your-proxmox-password"
+  pub_key_file = "/path/to/your/public_key.pub"
+}
+
+k3s_config = {
+  cluster_vip   = "192.168.8.20"
+  cluster_token = "your-k3s-cluster-token-here"
+  k3s_version   = "v1.31.4+k3s1"
+}
+
+p4d_config = {
+  enabled      = false
+  image        = "perforce/helix-core-server:latest"
+  storage_size = "50Gi"
+  node_port    = 31666
+}
