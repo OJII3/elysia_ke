@@ -1,20 +1,20 @@
 terraform {
   required_providers {
     proxmox = {
-      source = "telmate/proxmox"
+      source  = "telmate/proxmox"
       version = "3.0.2-rc01"
     }
   }
 }
 
 provider "proxmox" {
-  pm_api_url = "${var.proxmox_config.endpoint}"
-  pm_user = "${var.proxmox_config.username}"
-  pm_password = "${var.proxmox_config.password}"
+  pm_api_url  = var.proxmox_config.endpoint
+  pm_user     = var.proxmox_config.username
+  pm_password = var.proxmox_config.password
 }
 
 data "local_file" "ssh_public_key" {
-  filename = "${var.proxmox_config.pub_key_file}"
+  filename = var.proxmox_config.pub_key_file
 }
 
 # Common ISO file for all VMs
@@ -31,9 +31,9 @@ resource "local_file" "elysia_eden_user_data" {
     node_ip     = "192.168.8.10"
     p4d_enabled = var.p4d_config.enabled
     p4d_manifest = indent(6, templatefile("${path.module}/cloud-init/perforce-p4d.yml", {
-      p4d_image       = var.p4d_config.image
-      p4d_storage     = var.p4d_config.storage_size
-      p4d_node_port   = var.p4d_config.node_port
+      p4d_image     = var.p4d_config.image
+      p4d_storage   = var.p4d_config.storage_size
+      p4d_node_port = var.p4d_config.node_port
     }))
   }))
   filename = "/tmp/elysia-eden-user-data.yml"

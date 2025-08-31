@@ -1,15 +1,15 @@
 resource "proxmox_vm_qemu" "elysia-mobius" {
-  name         = "elysia-mobius"
-  target_node  = "Cipher"
-  vmid         = 130 # Explicit VM ID to prevent conflicts
+  name        = "elysia-mobius"
+  target_node = "Cipher"
+  vmid        = 130 # Explicit VM ID to prevent conflicts
 
-  agent    = 0
-  os_type  = "cloud-init"
-  onboot   = true
-  startup  = "order=3,up=60,down=60"
+  agent   = 0
+  os_type = "cloud-init"
+  onboot  = true
+  startup = "order=3,up=60,down=60"
 
   cpu {
-    cores  = 2
+    cores = 2
   }
   memory = 4096
 
@@ -22,8 +22,8 @@ resource "proxmox_vm_qemu" "elysia-mobius" {
     scsi {
       scsi0 {
         disk {
-          size     = "50G"
-          storage  = "local"
+          size    = "50G"
+          storage = "local"
         }
       }
     }
@@ -37,7 +37,7 @@ resource "proxmox_vm_qemu" "elysia-mobius" {
   }
 
   network {
-    id = 0
+    id     = 0
     bridge = "br0"
     model  = "virtio"
   }
@@ -48,7 +48,7 @@ resource "proxmox_vm_qemu" "elysia-mobius" {
   ipconfig0  = "ip=192.168.8.11/24,gw=192.168.8.1"
   nameserver = "192.168.8.1 1.1.1.1"
   cicustom   = "user=local:snippets/elysia-mobius-user-data.yml"
-  
+
   # Ensure cloud-init file is created before VM
   depends_on = [local_file.elysia_mobius_user_data]
 }
