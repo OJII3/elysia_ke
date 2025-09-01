@@ -29,6 +29,15 @@ Proxmox VE 上で動かす、k3s クラスタの構築を支援するツール�
 1. `.env.example` を `.env` にコピーして編集 (R2のキー等をS3の形式に合わせて生成)
 2. `terraform/modules/elysia/variables.tf.example` を `terraform/modules/elysia/variables.tf` にコピーして編集
 
+```sh
+qm create 9000 --name ubuntu-22.04-cloudinit-template --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
+qm importdisk 9000 /var/lib/vz/template/iso/ubuntu-22.04-server-cloudimg-amd64.img local-lvm
+qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
+qm set 9000 --ide2 local-lvm:cloudinit --boot c --bootdisk scsi0
+qm set 9000 --serial0 socket --vga serial0 --agent 1
+qm template 9000
+```
+
 ## Perforce Helix Core (p4d) を k3s で動かす
 
 このリポジトリは p4d をシングルレプリカでデプロイするための Kubernetes マニフェストを自動投入できます（NodePort 1666 で公開）。HA 構成やライセンス運用は各自の要件に合わせて調整してください。

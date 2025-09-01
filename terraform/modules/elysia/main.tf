@@ -8,16 +8,15 @@ terraform {
 }
 
 provider "proxmox" {
-  pm_api_url      = var.proxmox_config.endpoint
-  pm_user         = var.proxmox_config.username
-  pm_password     = var.proxmox_config.password
+  pm_api_url      = var.proxmox_url
+  pm_user         = var.proxmox_user
+  pm_password     = var.proxmox_password
   pm_tls_insecure = true
 }
 
-# Common ISO file for all VMs
 locals {
-  fedora_coreos_iso = "local:iso/flatcar_production_iso_image.iso"
-  ssh_public_key    = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICirSl3nlg3z3VID3ondlBDy7teYu74pnRPFhvj2LfkH"
+  ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICirSl3nlg3z3VID3ondlBDy7teYu74pnRPFhvj2LfkH"
+  iso_path       = "local:iso/flatcar_production_iso_image.iso"
 }
 
 
@@ -28,6 +27,7 @@ resource "local_file" "elysia_eden_user_data" {
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
     node_ip     = "192.168.8.10"
+    hostname    = "elysia-eden"
     p4d_enabled = var.p4d_config.enabled
     p4d_manifest = indent(6, templatefile("${path.module}/cloud-init/perforce-p4d.yml", {
       p4d_image     = var.p4d_config.image
@@ -44,6 +44,7 @@ resource "local_file" "elysia_mobius_user_data" {
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
     node_ip     = "192.168.8.11"
+    hostname    = "elysia-mobius"
   }))
   filename = "/tmp/elysia-mobius-user-data.yml"
 }
@@ -54,6 +55,34 @@ resource "local_file" "elysia_pardofelis_user_data" {
     k3s_version = var.k3s_config.k3s_version
     cluster_vip = var.k3s_config.cluster_vip
     node_ip     = "192.168.8.12"
+    hostname    = "elysia-pardofelis"
   }))
   filename = "/tmp/elysia-pardofelis-user-data.yml"
+}
+
+# Upload cloud-init user-data snippets to Proxmox snippets storage
+resource "null_resource" "upload_snippets" {
+  count = var.proxmox_ssh_host == null || var.proxmox_ssh_user == null || var.proxmox_ssh_private_key_path == null ? 0 : 1
+
+  connection {
+    type        = "ssh"
+    host        = var.proxmox_ssh_host
+    user        = var.proxmox_ssh_user
+    private_key = file(var.proxmox_ssh_private_key_path)
+  }
+
+  provisioner "file" {
+    source      = local_file.elysia_eden_user_data.filename
+    destination = "/var/lib/vz/snippets/elysia-eden-user-data.yml"
+  }
+
+  provisioner "file" {
+    source      = local_file.elysia_mobius_user_data.filename
+    destination = "/var/lib/vz/snippets/elysia-mobius-user-data.yml"
+  }
+
+  provisioner "file" {
+    source      = local_file.elysia_pardofelis_user_data.filename
+    destination = "/var/lib/vz/snippets/elysia-pardofelis-user-data.yml"
+  }
 }

@@ -1,5 +1,6 @@
----
-# cloud-config
+#cloud-config
+hostname: ${hostname}
+ssh_pwauth: false
 users:
   - default
   - name: kubernetes

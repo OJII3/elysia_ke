@@ -1,16 +1,17 @@
-variable "proxmox_config" {
-  sensitive = true
-  type = object({
-    endpoint = string
-    username = string
-    password = string
-  })
-  default = {
-    endpoint = "http://cipher:8006/api2/json"
-    username = "xxxxxxxx"
-    password = "xxxxxxxxxxxxxxx"
-  }
-  description = "Proxmox VE connection configuration"
+variable "proxmox_url" {
+  type        = string
+  description = "Proxmox VE API URL"
+}
+
+variable "proxmox_user" {
+  type        = string
+  description = "Proxmox VE username"
+}
+
+variable "proxmox_password" {
+  sensitive   = true
+  type        = string
+  description = "Proxmox VE password"
 }
 
 variable "k3s_config" {
@@ -42,4 +43,39 @@ variable "p4d_config" {
     node_port    = 31666
   }
   description = "Perforce Helix Core (p4d) deployment configuration"
+}
+
+# Storage where Proxmox snippets are stored (usually 'local')
+variable "proxmox_snippets_storage" {
+  type        = string
+  default     = "local"
+  description = "Proxmox storage name used for snippets (e.g., 'local')."
+}
+
+# SSH connection info to Proxmox host for uploading snippets and importing disks
+variable "proxmox_ssh_host" {
+  type        = string
+  default     = null
+  description = "Proxmox host/IP for SSH (set to enable uploads/import)."
+}
+
+variable "proxmox_ssh_user" {
+  type        = string
+  default     = null
+  description = "SSH user for Proxmox (e.g., 'root')."
+}
+
+variable "proxmox_ssh_private_key_path" {
+  type        = string
+  default     = null
+  description = "Path to SSH private key for Proxmox access."
+}
+
+
+# Name of an existing Proxmox VM template prepared from a cloud-init image
+# Follow the provider's cloud-init getting started guide to create it.
+variable "proxmox_vm_template" {
+  type        = string
+  default     = "ubuntu-24.04-cloudinit-template"
+  description = "Cloud-init enabled VM template name to clone for each node."
 }

@@ -1,5 +1,0 @@
-proxmox_confif = {
-  endpoint = "http://<url>:8006/api2/json"
-  username = "root@pam"
-  password = "<password>"
-}

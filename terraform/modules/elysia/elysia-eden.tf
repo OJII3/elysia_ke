@@ -3,52 +3,60 @@ resource "proxmox_vm_qemu" "elysia-eden" {
   target_node = "Cipher"
   vmid        = 110 # Explicit VM ID to prevent conflicts
 
+  # clone      = var.proxmox_vm_template
+
   agent   = 0
   os_type = "cloud-init"
   onboot  = true
-  startup = "order=3,up=60,down=60"
+  # boot    = "order=scsi0"
 
   cpu {
     cores = 2
   }
   memory = 4096
 
-  # Boot configuration
-  bootdisk = "scsi0"
-  boot     = "order=scsi0;ide2"
+  network {
+    id     = 0
+    bridge = "vmbr0"
+    model  = "virtio"
+  }
 
-  # New disks block syntax for provider 3.x
+  serial {
+    id = 0
+  }
+
   disks {
     scsi {
       scsi0 {
         disk {
-          size    = "50G"
           storage = "local"
+          size    = "2G" 
         }
       }
     }
     ide {
-      ide1 {
+      # ide1 {
+      #   cloudinit {
+      #     storage = "local"
+      #   }
+      # }
+      ide2 {
         cdrom {
-          iso = local.fedora_coreos_iso
+          iso = local.iso_path
         }
       }
     }
   }
 
-  network {
-    id     = 0
-    bridge = "br0"
-    model  = "virtio"
-  }
-
   # Cloud-init configuration
-  ciuser     = "kubernetes"
-  sshkeys    = local.ssh_public_key
-  ipconfig0  = "ip=192.168.8.10/24,gw=192.168.8.1"
-  nameserver = "192.168.8.1 1.1.1.1"
-  cicustom   = "user=local:snippets/elysia-eden-user-data.yml"
+  # ciuser     = "kubernetes"
+  # sshkeys    = local.ssh_public_key
+  # ipconfig0  = "ip=192.168.8.10/24,gw=192.168.8.1"
+  # nameserver = "192.168.8.1 1.1.1.1"
+  # cicustom   = "user=${var.proxmox_snippets_storage}:snippets/elysia-eden-user-data.yml"
 
-  # Ensure cloud-init file is created before VM
-  depends_on = [local_file.elysia_eden_user_data]
+  # depends_on = [
+  #   local_file.elysia_eden_user_data,
+  #   null_resource.upload_snippets,
+  # ]
 }
